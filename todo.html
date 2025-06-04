@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #f8e1f4, #e1f7f5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      margin-top: 2rem;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #ff4081;
+      animation: headerSlide 1s ease-out;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    @keyframes headerSlide {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    input {
+      padding: 10px;
+      width: 70%;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff5c8a;
+      color: white;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e6005c;
+    }
+
+    ul {
+      padding: 0;
+      list-style-type: none;
+    }
+
+    li {
+      background-color: #ffe6f0;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    li button {
+      background-color: #ff6699;
+      font-size: 0.8rem;
+      padding: 5px 10px;
+      margin-left: 5px;
+    }
+
+    li button:hover {
+      background-color: #cc0066;
+    }
+  </style>
+</head>
+<body>
+  <header>📝 To-Do List</header>
+
+  <div class="container">
+    <input type="text" placeholder="Plan Your Day"/>
+    <button onclick="add()">Add</button>
+    <button onclick="update()" style="display: none;">Update</button>
+    <ul></ul>
+  </div>
+
+  <script>
+    let ipr = document.querySelector("input")
+    let ur = document.querySelector("ul")
+    let btnr = document.querySelectorAll("button")
+    let arr = []
+    let endidx = -1
+
+    let disp = () => {
+      let s = ""
+      for(let i = 0; i < arr.length; i++) {
+        s = s + `<li>${arr[i]}<span><button onclick="edit(${i})">Edit</button><button onclick="del(${i})">Delete</button></span></li>`
+      }
+      ur.innerHTML = s
+    }
+
+    let add = () => {
+      if (ipr.value.trim() === "") {
+        alert("🚫 Empty task not allowed!")
+        return
+      }
+      arr.push(ipr.value)
+      ipr.value = ""
+      disp()
+    }
+
+    function del(ind) {
+      arr.splice(ind, 1)
+      disp()
+    }
+
+    function edit(ind) {
+      ipr.value = arr[ind]
+      endidx = ind
+      btnr[0].style.display = "none"
+      btnr[1].style.display = "inline-block"
+    }
+
+    let update = () => {
+      if (ipr.value.trim() === "") {
+        alert("🚫 Task can't be blank!")
+        return
+      }
+      arr[endidx] = ipr.value
+      ipr.value = ""
+      btnr[0].style.display = "inline-block"
+      btnr[1].style.display = "none"
+      disp()
+    }
+  </script>
+</body>
+</html>
